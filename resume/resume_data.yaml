@@ -1,0 +1,33 @@
+# Currículo estruturado — TODO: preencher com os dados reais assim que o
+# arquivo original for compartilhado (resume/original/).
+# Isso alimenta futuras versões do matcher (ex.: comparar skills reais
+# em vez de só keywords fixas) e a geração de currículos otimizados por vaga.
+
+nome: ""
+titulo_profissional: ""
+resumo: ""
+
+contato:
+  email: ""
+  linkedin: ""
+  github: ""
+  localizacao: ""
+
+experiencias: []
+  # - cargo: ""
+  #   empresa: ""
+  #   periodo: ""
+  #   descricao: ""
+  #   tecnologias: []
+
+formacao: []
+  # - curso: ""
+  #   instituicao: ""
+  #   periodo: ""
+
+skills:
+  tecnicas: []
+  ferramentas: []
+  idiomas: []
+
+certificacoes: []

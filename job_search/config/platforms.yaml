@@ -1,0 +1,49 @@
+# Plataformas-alvo para busca de vagas.
+#
+# mode:
+#   api       -> coleta automatizada via endpoint público (sem login)
+#   manual    -> sem automação segura; vagas entram via job_search/config/manual_jobs.yaml
+#
+# companies: lista de slugs/identificadores de empresas a monitorar nessa plataforma.
+# Preencha com as empresas do seu radar (indústria farmacêutica, life sciences, tech).
+
+- name: gupy
+  mode: api
+  notes: >
+    Muitas empresas usam a Gupy com painel de vagas público em formato JSON
+    (ex.: https://<empresa>.gupy.io ou portal.api.gupy.io). Endpoint exato
+    varia por empresa e precisa ser validado individualmente.
+  companies: []
+
+- name: solides
+  mode: api
+  notes: >
+    Página de vagas por empresa costuma ser pública; validar se há endpoint
+    JSON ou se será necessário parsear HTML.
+  companies: []
+
+- name: abler
+  mode: api
+  notes: "Validar endpoint público por empresa."
+  companies: []
+
+- name: bairesdev
+  mode: api
+  notes: "Página de carreiras costuma ser pública, validar formato."
+  companies: []
+
+- name: inhire
+  mode: api
+  notes: "Validar endpoint público por empresa."
+  companies: []
+
+- name: linkedin
+  mode: manual
+  notes: >
+    Scraping viola os Termos de Uso do LinkedIn e arrisca bloqueio de conta.
+    Configure um alerta de vaga (Job Alert) por e-mail e cole os links
+    relevantes em manual_jobs.yaml, ou copie o texto da vaga diretamente.
+
+- name: glassdoor
+  mode: manual
+  notes: "Mesma lógica do LinkedIn: sem automação, entrada manual."

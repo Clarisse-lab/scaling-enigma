@@ -1,0 +1,40 @@
+# Palavras-chave usadas pelo matcher para pontuar vagas.
+# Ajuste os pesos conforme o quanto cada termo importa para você.
+# weight: 3 = essencial | 2 = muito relevante | 1 = bônus
+
+core_domain:
+  - { term: "farmacêutic", weight: 3 }
+  - { term: "life sciences", weight: 3 }
+  - { term: "pharma", weight: 3 }
+  - { term: "regulatório", weight: 2 }
+  - { term: "GxP", weight: 2 }
+  - { term: "GMP", weight: 2 }
+  - { term: "LIMS", weight: 2 }
+  - { term: "saúde", weight: 1 }
+  - { term: "biotecnologia", weight: 2 }
+
+data_analysis:
+  - { term: "análise de dados", weight: 3 }
+  - { term: "data analyst", weight: 3 }
+  - { term: "data science", weight: 2 }
+  - { term: "SQL", weight: 2 }
+  - { term: "Power BI", weight: 2 }
+  - { term: "Python", weight: 2 }
+  - { term: "dashboards", weight: 1 }
+  - { term: "ETL", weight: 2 }
+
+automation:
+  - { term: "automação", weight: 3 }
+  - { term: "RPA", weight: 2 }
+  - { term: "scripts", weight: 1 }
+  - { term: "integração de sistemas", weight: 2 }
+
+systems:
+  - { term: "ERP", weight: 1 }
+  - { term: "SAP", weight: 1 }
+  - { term: "sistemas industriais", weight: 2 }
+
+# Termos que derrubam a pontuação (ex.: senioridade incompatível, áreas fora de interesse)
+negative:
+  - { term: "estágio", weight: -2 }
+  - { term: "trainee", weight: -1 }
