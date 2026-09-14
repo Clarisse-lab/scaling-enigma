@@ -1,33 +1,114 @@
-# Currículo estruturado — TODO: preencher com os dados reais assim que o
-# arquivo original for compartilhado (resume/original/).
-# Isso alimenta futuras versões do matcher (ex.: comparar skills reais
-# em vez de só keywords fixas) e a geração de currículos otimizados por vaga.
+# Currículo estruturado, usado pelo matcher e para gerar versões
+# otimizadas por vaga. Telefone deixado fora de propósito (ver resume/README.md).
 
-nome: ""
-titulo_profissional: ""
-resumo: ""
+nome: "Clarisse Lima de Assis"
+titulo_profissional: "Saúde e Tecnologia — Farmacêutica & Gestora de Tecnologia"
+resumo: >
+  Farmacêutica e estudante de Computação em Nuvem, com experiência em gestão
+  de operações de saúde, análise de dados, produção de conteúdo e
+  desenvolvimento de soluções digitais. Atua com processos regulatórios,
+  rastreabilidade, indicadores e liderança de equipes, além de automações,
+  integrações via APIs e aplicações de inteligência artificial. Combina
+  conhecimento científico, tecnologia e visão de negócio para organizar
+  processos, produzir informações confiáveis e apoiar produtos e serviços
+  nos setores farmacêutico, healthtech e SaaS.
 
 contato:
-  email: ""
-  linkedin: ""
-  github: ""
+  email: "clarisse26@gmail.com"
+  linkedin: ""   # TODO: preencher
+  github: ""     # TODO: preencher
   localizacao: ""
 
-experiencias: []
-  # - cargo: ""
-  #   empresa: ""
-  #   periodo: ""
-  #   descricao: ""
-  #   tecnologias: []
+experiencias:
+  - cargo: "Gestora de Tecnologia"
+    empresa: "Mantora - Agência de Marketing Digital"
+    periodo: "Julho/2025 – Atualmente"
+    descricao: >
+      Gerenciamento e otimização de ferramentas e automações para múltiplos
+      clientes. Desenvolvimento de sistemas automatizados com integração via
+      APIs REST. Criação e manutenção de pipelines de dados com Supabase e
+      automação de relatórios de performance. Gestão de infraestrutura cloud
+      self-hosted e configuração de ambientes de produção. Implementação de
+      soluções de captação de leads com landing pages e integrações com
+      CRMs. Configuração de domínios, subdomínios e registros DNS. Estrutura
+      fluxos que conectam formulários, planilhas, CRMs e bancos de dados,
+      validando campos e reduzindo falhas de cadastro. Automatiza relatórios
+      e controles de acompanhamento, apoiando decisões com dados
+      consolidados. Produção, revisão e adaptação de conteúdos digitais para
+      páginas, campanhas e materiais de comunicação.
+    tecnologias:
+      - n8n
+      - APIs REST
+      - Supabase
+      - SQL
+      - Python
+      - RD Station
+      - CRMs
+      - Meta Ads API
+      - AWS
+      - Google Cloud
+      - Cloudflare
+      - DNS
+      - EasyPanel
+      - self-hosted
 
-formacao: []
-  # - curso: ""
-  #   instituicao: ""
-  #   periodo: ""
+  - cargo: "Farmacêutica Responsável / Supervisora"
+    empresa: "Drogaria Maxi Popular"
+    periodo: "Agosto/2021 – Atualmente"
+    descricao: >
+      Responsabilidade técnica pela unidade, garantindo conformidade com
+      normas da ANVISA e legislação sanitária. Supervisão de equipe e gestão
+      operacional. Atendimento clínico-farmacêutico com orientação ao
+      paciente sobre farmacoterapia. Controle de estoque, gestão de
+      fornecedores e análise de indicadores de desempenho. Implementação de
+      melhorias de processos internos e treinamento de colaboradores.
+    tecnologias:
+      - SNGPC
+      - Anvisa
+      - legislação sanitária
+      - rastreabilidade
+      - farmacoterapia
+
+formacao:
+  - curso: "Tecnologia em Computação em Nuvem"
+    instituicao: "Faculdade Anhanguera"
+    periodo: "2025 – 2028 (em andamento)"
+  - curso: "Bacharelado em Farmácia"
+    instituicao: "Universidade Federal de Juiz de Fora — Campus Governador Valadares"
+    periodo: "2012 – 2017"
 
 skills:
-  tecnicas: []
-  ferramentas: []
-  idiomas: []
+  tecnicas:
+    - n8n
+    - APIs REST
+    - Supabase
+    - SQL
+    - Python
+    - AWS
+    - Google Cloud
+    - Cloudflare
+    - DNS / gestão de domínios
+    - EasyPanel / ambientes self-hosted
+    - IA generativa (Gemini, Claude)
+    - análise de dados
+    - automação de processos
+    - SNGPC
+    - Anvisa / legislação sanitária
+    - rastreabilidade
+    - farmacoterapia
+  ferramentas:
+    - n8n
+    - Supabase
+    - RD Station
+    - Meta Ads API
+    - CRMs
+    - EasyPanel
+    - Cloudflare
+  idiomas:
+    - "Português — Nativo"
+    - "Inglês — Fluente"
 
-certificacoes: []
+certificacoes:
+  - "AWS Cloud Practitioner"
+  - "Google Cloud Digital Leader"
+  - "Python para Dados - Alura"

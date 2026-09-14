@@ -32,7 +32,13 @@ O portfólio (site/repositório para atrair recrutadores) é um projeto separado
 
 ## Status
 
-🚧 Em construção. Próximos passos:
-1. Importar o currículo real em `resume/original/` e preencher `resume/resume_data.yaml`.
-2. Validar e completar os endpoints/empresas-alvo em `job_search/config/platforms.yaml`.
-3. Rodar o matching e revisar o ranking de vagas.
+🚧 Em construção.
+
+✅ Feito:
+- `resume/resume_data.yaml` preenchido com o currículo real (farmacêutica + gestora de tecnologia, foco em automação/dados/cloud para healthtech/SaaS/farma).
+- `job_search/config/keywords.yaml` recalibrado com base nesse perfil.
+- Matching testado e funcionando (`python -m jobhunter.cli`).
+
+⏳ Pendente:
+1. Lista de empresas-alvo (farmacêuticas, laboratórios, healthtech) em `job_search/config/platforms.yaml`, para eu validar os endpoints reais de Gupy/Solides/Abler/BairesDev.
+2. Definir se o PDF original vai para `resume/original/` (contém telefone — ver `resume/README.md` sobre exposição de dados sensíveis caso o repositório seja público).

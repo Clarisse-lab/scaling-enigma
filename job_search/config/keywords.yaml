@@ -1,40 +1,71 @@
 # Palavras-chave usadas pelo matcher para pontuar vagas.
-# Ajuste os pesos conforme o quanto cada termo importa para você.
+# Calibrado a partir do currículo real (resume/resume_data.yaml):
+# farmacêutica + gestora de tecnologia, forte em automação/dados/cloud,
+# mirando healthtech, SaaS e indústria farmacêutica.
+#
 # weight: 3 = essencial | 2 = muito relevante | 1 = bônus
 
 core_domain:
   - { term: "farmacêutic", weight: 3 }
+  - { term: "farmácia", weight: 3 }
+  - { term: "healthtech", weight: 3 }
+  - { term: "saúde", weight: 2 }
   - { term: "life sciences", weight: 3 }
   - { term: "pharma", weight: 3 }
+  - { term: "laboratório", weight: 2 }
+  - { term: "hospitalar", weight: 1 }
   - { term: "regulatório", weight: 2 }
-  - { term: "GxP", weight: 2 }
-  - { term: "GMP", weight: 2 }
-  - { term: "LIMS", weight: 2 }
-  - { term: "saúde", weight: 1 }
+  - { term: "anvisa", weight: 2 }
+  - { term: "sngpc", weight: 2 }
+  - { term: "gxp", weight: 2 }
+  - { term: "gmp", weight: 2 }
+  - { term: "rastreabilidade", weight: 1 }
   - { term: "biotecnologia", weight: 2 }
+  - { term: "saas", weight: 2 }
 
 data_analysis:
   - { term: "análise de dados", weight: 3 }
   - { term: "data analyst", weight: 3 }
-  - { term: "data science", weight: 2 }
-  - { term: "SQL", weight: 2 }
-  - { term: "Power BI", weight: 2 }
-  - { term: "Python", weight: 2 }
+  - { term: "data science", weight: 1 }
+  - { term: "sql", weight: 3 }
+  - { term: "python", weight: 3 }
+  - { term: "power bi", weight: 1 }
   - { term: "dashboards", weight: 1 }
-  - { term: "ETL", weight: 2 }
+  - { term: "etl", weight: 1 }
+  - { term: "indicadores", weight: 1 }
 
 automation:
   - { term: "automação", weight: 3 }
-  - { term: "RPA", weight: 2 }
-  - { term: "scripts", weight: 1 }
+  - { term: "n8n", weight: 3 }
+  - { term: "rpa", weight: 2 }
   - { term: "integração de sistemas", weight: 2 }
+  - { term: "apis rest", weight: 2 }
+  - { term: "api rest", weight: 2 }
+  - { term: "low-code", weight: 1 }
+  - { term: "no-code", weight: 1 }
+  - { term: "crm", weight: 1 }
+  - { term: "webhook", weight: 1 }
 
-systems:
-  - { term: "ERP", weight: 1 }
-  - { term: "SAP", weight: 1 }
-  - { term: "sistemas industriais", weight: 2 }
+cloud_infra:
+  - { term: "cloud", weight: 2 }
+  - { term: "aws", weight: 2 }
+  - { term: "google cloud", weight: 2 }
+  - { term: "gcp", weight: 2 }
+  - { term: "supabase", weight: 2 }
+  - { term: "self-hosted", weight: 1 }
+  - { term: "devops", weight: 1 }
+  - { term: "cloudflare", weight: 1 }
+  - { term: "dns", weight: 1 }
 
-# Termos que derrubam a pontuação (ex.: senioridade incompatível, áreas fora de interesse)
+ai:
+  - { term: "inteligência artificial", weight: 2 }
+  - { term: "ia generativa", weight: 2 }
+  - { term: "llm", weight: 2 }
+  - { term: "claude", weight: 1 }
+  - { term: "gemini", weight: 1 }
+  - { term: "chatgpt", weight: 1 }
+
+# Termos que derrubam a pontuação (senioridade/áreas fora de interesse)
 negative:
   - { term: "estágio", weight: -2 }
   - { term: "trainee", weight: -1 }
