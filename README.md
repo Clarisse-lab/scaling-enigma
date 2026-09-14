@@ -1,30 +1,61 @@
 # scaling-enigma
 
-Motor pessoal de busca e ranqueamento de vagas de emprego, focado na interseção **tecnologia + ciência** — análise de dados, automação e sistemas para indústria farmacêutica/life sciences.
+Motor pessoal de busca e ranqueamento de vagas de emprego, focado na interseção **tecnologia + ciência** — análise de dados, automação e sistemas para indústria farmacêutica/life sciences. Roda uma **varredura diária automática** (GitHub Actions) e te notifica quando encontra vagas relevantes.
 
-> O portfólio para chamar atenção de recrutadores vive em um repositório separado (ver seção "Portfólio" abaixo).
+> O portfólio para chamar atenção de recrutadores vive em um repositório separado.
 
 ## Estrutura do repositório
 
 ```
 .
-├── job_search/       # motor de busca e ranqueamento de vagas
-│   ├── config/        # plataformas-alvo e palavras-chave de matching
-│   └── src/jobhunter/  # código: fontes de dados, modelo de vaga, matching, CLI
-└── resume/            # currículo original + dados estruturados + versões otimizadas por vaga
-    ├── original/       # PDF/Word do currículo-base (não versionar dados sensíveis publicamente)
+├── .github/workflows/
+│   └── daily-job-scan.yml  # cron diário: busca, pontua, commita relatório, abre issue
+├── job_search/
+│   ├── config/
+│   │   ├── search.yaml       # consultas por área/palavra-chave (Adzuna/Jooble) — sem empresa fixa
+│   │   ├── keywords.yaml     # termos usados para pontuar/ranquear as vagas encontradas
+│   │   ├── platforms.yaml    # fontes por empresa específica (opcional, ver abaixo)
+│   │   └── manual_jobs.yaml  # vagas coladas manualmente (LinkedIn/Glassdoor)
+│   ├── results/               # relatórios diários em Markdown (um arquivo por data)
+│   ├── src/jobhunter/          # código: fontes de dados, matching, CLI
+│   └── .env.example            # chaves de API necessárias
+└── resume/
+    ├── original/       # PDF/Word do currículo-base
     ├── tailored/        # currículos gerados/otimizados para vagas específicas
-    └── resume_data.yaml # currículo estruturado (skills, experiências, keywords) usado no matching
+    └── resume_data.yaml # currículo estruturado (skills, experiências) usado no matching
 ```
 
 ## Como funciona a busca de vagas
 
-Nem toda plataforma pode ser automatizada com segurança — os Termos de Uso de várias delas (LinkedIn, Glassdoor) proíbem scraping e o risco é bloqueio de conta. A estratégia adotada:
+Nem toda plataforma pode ser automatizada com segurança — os Termos de Uso de várias delas (LinkedIn, Glassdoor) proíbem scraping e o risco é bloqueio de conta. Além disso, plataformas como Gupy/Solides/Abler não têm um agregador público de busca por área entre todas as empresas — só por empresa individual, o que não escala. A estratégia adotada:
 
-- **Automatizado (API/página pública por empresa):** Gupy, Solides, Abler, BairesDev e similares — várias expõem endpoints públicos de listagem de vagas por empresa, sem precisar de login.
-- **Manual/assistido:** LinkedIn, Glassdoor — alimentados via alertas de e-mail configurados por você ou links colados manualmente em `job_search/config/manual_jobs.yaml`. O sistema ainda pontua e ranqueia essas vagas junto com as demais.
+- **Busca diária por área (sem empresa fixa):** [Adzuna](https://developer.adzuna.com/) e [Jooble](https://jooble.org/api/about) — agregadores com API gratuita de busca por palavra-chave + localização, configurados em `job_search/config/search.yaml`. É a fonte principal da varredura diária.
+- **Por empresa específica (opcional):** Gupy, Solides, Abler, BairesDev — se você quiser mirar uma empresa que já conhece, adicione o slug dela em `job_search/config/platforms.yaml`. Os endpoints ainda não foram validados ao vivo (ver notas em cada arquivo de `sources/`).
+- **Manual/assistido:** LinkedIn, Glassdoor — sem automação segura; configure um alerta de vaga (Job Alert) por palavra-chave nessas plataformas e cole as relevantes em `job_search/config/manual_jobs.yaml`. Entram no ranking junto com as demais.
 
-Ver detalhes de cada fonte em `job_search/src/jobhunter/sources/`.
+Todas as vagas coletadas passam pelo mesmo ranqueamento, definido por `job_search/config/keywords.yaml` (calibrado com base no currículo real em `resume/resume_data.yaml`).
+
+## Varredura diária automática
+
+O workflow `.github/workflows/daily-job-scan.yml` roda todo dia às 08:00 (horário de Brasília):
+1. Executa a busca (Adzuna + Jooble + fontes opcionais + manuais).
+2. Gera um relatório em `job_search/results/AAAA-MM-DD.md` e commita no repositório.
+3. Se houver vagas encontradas, abre uma **Issue** no GitHub com o resumo — isso dispara a notificação padrão do GitHub (e-mail/app) sem precisar configurar nenhum serviço externo.
+
+### Configuração necessária
+
+Para a varredura funcionar, cadastre-se gratuitamente e adicione as chaves como **Secrets** do repositório (Settings → Secrets and variables → Actions):
+
+| Secret | Onde obter |
+|---|---|
+| `ADZUNA_APP_ID`, `ADZUNA_APP_KEY` | https://developer.adzuna.com/ |
+| `JOOBLE_API_KEY` | https://jooble.org/api/about |
+
+Sem essas chaves, a varredura roda mas não encontra vagas (as fontes avisam e pulam, sem quebrar).
+
+Para rodar localmente: copie `job_search/.env.example` para `.env`, preencha as chaves, exporte as variáveis e rode `cd job_search && PYTHONPATH=src python -m jobhunter.cli`.
+
+⚠️ Os endpoints do Adzuna/Jooble foram implementados conforme a documentação pública deles, mas não puderam ser testados ao vivo no ambiente onde este código foi escrito (sem acesso à internet aberta). Acompanhe a primeira execução real no GitHub Actions para confirmar que estão retornando vagas.
 
 ## Portfólio
 
@@ -35,10 +66,13 @@ O portfólio (site/repositório para atrair recrutadores) é um projeto separado
 🚧 Em construção.
 
 ✅ Feito:
-- `resume/resume_data.yaml` preenchido com o currículo real (farmacêutica + gestora de tecnologia, foco em automação/dados/cloud para healthtech/SaaS/farma).
-- `job_search/config/keywords.yaml` recalibrado com base nesse perfil.
-- Matching testado e funcionando (`python -m jobhunter.cli`).
+- `resume/resume_data.yaml` preenchido com o currículo real.
+- `job_search/config/keywords.yaml` calibrado com base nesse perfil.
+- Busca por área via Adzuna + Jooble implementada (`job_search/config/search.yaml`).
+- Varredura diária + notificação via Issue configurada em `.github/workflows/daily-job-scan.yml`.
+- Matching testado localmente (sem rede) e funcionando.
 
 ⏳ Pendente:
-1. Lista de empresas-alvo (farmacêuticas, laboratórios, healthtech) em `job_search/config/platforms.yaml`, para eu validar os endpoints reais de Gupy/Solides/Abler/BairesDev.
-2. Definir se o PDF original vai para `resume/original/` (contém telefone — ver `resume/README.md` sobre exposição de dados sensíveis caso o repositório seja público).
+1. Cadastrar nas APIs (Adzuna, Jooble) e configurar os Secrets no GitHub.
+2. Acompanhar a primeira execução do workflow para validar os endpoints reais.
+3. Definir se o PDF original vai para `resume/original/` (contém telefone — ver `resume/README.md` sobre exposição de dados sensíveis caso o repositório seja público).

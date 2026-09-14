@@ -1,0 +1,63 @@
+name: Varredura diária de vagas
+
+on:
+  schedule:
+    # 11:00 UTC = 08:00 horário de Brasília (sem horário de verão desde 2019)
+    - cron: "0 11 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: pip install -r job_search/requirements.txt
+
+      - name: Definir nome do relatório
+        id: vars
+        run: echo "date=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Rodar a busca de vagas
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+          JOOBLE_API_KEY: ${{ secrets.JOOBLE_API_KEY }}
+        run: |
+          cd job_search
+          PYTHONPATH=src python -m jobhunter.cli --report "results/${{ steps.vars.outputs.date }}.md"
+
+      - name: Commitar o relatório
+        run: |
+          git config user.name "job-scan-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add job_search/results/
+          git diff --cached --quiet || git commit -m "Varredura diária de vagas - ${{ steps.vars.outputs.date }}"
+          git push
+
+      - name: Abrir issue com o resumo (notificação, só se houver vagas)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const date = "${{ steps.vars.outputs.date }}";
+            const path = `job_search/results/${date}.md`;
+            if (!fs.existsSync(path)) return;
+            const body = fs.readFileSync(path, 'utf8');
+            if (body.startsWith('# Vagas encontradas (0)')) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Vagas do dia - ${date}`,
+              body,
+              labels: ["vagas"],
+            });

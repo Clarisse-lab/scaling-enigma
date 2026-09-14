@@ -1,8 +1,8 @@
-"""Fonte de vagas: Solides.
+"""Fonte de vagas: Solides, por empresa específica (opcional).
 
-O endpoint público, quando existe, precisa ser confirmado empresa a
-empresa (inspecione a aba Network da página de carreiras no navegador).
-Implementação deixada como esqueleto até a validação.
+Sem agregador público por área — a varredura diária usa Adzuna/Jooble.
+Endpoint ainda não validado; preencher após inspecionar a aba Network da
+página de vagas da empresa.
 """
 
 from jobhunter.models import JobPosting
@@ -12,9 +12,10 @@ from jobhunter.sources.base import JobSource
 class SolidesSource(JobSource):
     name = "solides"
 
-    def fetch_jobs(self, companies: list[str]) -> list[JobPosting]:
-        if companies:
-            print(f"[solides] endpoint ainda não validado para: {companies}. "
-                  f"Preencha a lógica de fetch em sources/solides.py após inspecionar "
-                  f"a aba Network da página de vagas da empresa.")
+    def __init__(self, companies: list[str] | None = None):
+        self.companies = companies or []
+
+    def fetch_jobs(self) -> list[JobPosting]:
+        if self.companies:
+            print(f"[solides] endpoint ainda não validado para: {self.companies}.")
         return []

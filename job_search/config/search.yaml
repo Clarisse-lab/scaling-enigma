@@ -1,0 +1,21 @@
+# Consultas usadas pelas APIs de busca agregada (Adzuna, Jooble) para a
+# varredura diária. Cada item vira uma chamada de busca por palavra-chave
+# ("what") + localização ("where"), sem precisar saber a empresa antes.
+#
+# Ajuste/adicione termos conforme o que trouxer melhores resultados —
+# o ranqueamento final ainda é feito por job_search/config/keywords.yaml.
+
+location: "Brasil"
+
+queries:
+  - what: "farmacêutica dados"
+  - what: "análise de dados saúde"
+  - what: "automação processos saúde"
+  - what: "healthtech"
+  - what: "analista de dados farmacêutica"
+  - what: "n8n automação"
+  - what: "automação farmacêutica"
+  - what: "dados regulatório farmacêutico"
+
+# Quantos resultados pedir por consulta, por plataforma.
+results_per_query: 20

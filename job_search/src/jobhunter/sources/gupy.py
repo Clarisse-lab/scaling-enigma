@@ -1,15 +1,14 @@
-"""Fonte de vagas: Gupy.
+"""Fonte de vagas: Gupy, por empresa específica.
 
-Muitas empresas que usam a Gupy expõem um painel público de vagas em
-`https://<empresa>.gupy.io`, que carrega os dados via uma API JSON.
-O endpoint exato varia por empresa/versão do painel e PRECISA ser
-confirmado manualmente antes de automatizar (abra a página da empresa
-no navegador, inspecione a aba Network e copie a URL do request que
-retorna a lista de vagas em JSON).
+Gupy não tem um agregador público de busca por área entre todas as
+empresas — cada empresa tem seu próprio painel. Esta fonte só entra em
+ação se você configurar `companies` em job_search/config/platforms.yaml;
+a varredura diária por área usa Adzuna/Jooble (ver adzuna.py, jooble.py).
 
-Este módulo fica com uma implementação best-effort: tenta o padrão mais
-comum e falha de forma explícita se a resposta não for a esperada, em vez
-de mascarar o erro.
+O endpoint abaixo é o padrão mais comum observado em painéis Gupy, mas
+PRECISA ser confirmado por empresa (abra a página da empresa no navegador,
+aba Network, e copie a URL do request que retorna a lista de vagas em
+JSON) antes de confiar cegamente nele.
 """
 
 import requests
@@ -17,16 +16,18 @@ import requests
 from jobhunter.models import JobPosting
 from jobhunter.sources.base import JobSource
 
-# Padrão observado com mais frequência; validar por empresa antes de confiar.
 JOB_BOARD_URL_TEMPLATE = "https://{company}.gupy.io/api/job_postings/published"
 
 
 class GupySource(JobSource):
     name = "gupy"
 
-    def fetch_jobs(self, companies: list[str]) -> list[JobPosting]:
+    def __init__(self, companies: list[str] | None = None):
+        self.companies = companies or []
+
+    def fetch_jobs(self) -> list[JobPosting]:
         jobs: list[JobPosting] = []
-        for company in companies:
+        for company in self.companies:
             url = JOB_BOARD_URL_TEMPLATE.format(company=company)
             try:
                 resp = requests.get(url, timeout=10)

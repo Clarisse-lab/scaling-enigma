@@ -1,11 +1,15 @@
-# Plataformas-alvo para busca de vagas.
+# Plataformas por empresa específica — OPCIONAL.
+#
+# A varredura diária por área/palavra-chave (sem precisar saber a empresa)
+# usa os agregadores Adzuna e Jooble, configurados em search.yaml. Este
+# arquivo só importa se você quiser mirar uma empresa específica além
+# disso — preencha `companies` com o slug da empresa e o endpoint
+# correspondente (ainda não validado, ver notes de cada plataforma) entra
+# na varredura junto com o resto.
 #
 # mode:
 #   api       -> coleta automatizada via endpoint público (sem login)
 #   manual    -> sem automação segura; vagas entram via job_search/config/manual_jobs.yaml
-#
-# companies: lista de slugs/identificadores de empresas a monitorar nessa plataforma.
-# Preencha com as empresas do seu radar (indústria farmacêutica, life sciences, tech).
 
 - name: gupy
   mode: api
@@ -34,7 +38,7 @@
 
 - name: inhire
   mode: api
-  notes: "Validar endpoint público por empresa."
+  notes: "Ainda sem fonte implementada em sources/ — adicionar se for usar."
   companies: []
 
 - name: linkedin

@@ -2,7 +2,9 @@
 
 Lê job_search/config/manual_jobs.yaml, onde você cola vagas encontradas
 em plataformas que não automatizamos por risco de violar os Termos de
-Uso (scraping de LinkedIn/Glassdoor).
+Uso (scraping de LinkedIn/Glassdoor). Configure um alerta de vaga
+(Job Alert) por palavra-chave nessas plataformas e cole aqui as que
+interessarem.
 """
 
 from pathlib import Path
@@ -18,7 +20,7 @@ CONFIG_PATH = Path(__file__).resolve().parents[3] / "config" / "manual_jobs.yaml
 class ManualSource(JobSource):
     name = "manual"
 
-    def fetch_jobs(self, companies: list[str] | None = None) -> list[JobPosting]:
+    def fetch_jobs(self) -> list[JobPosting]:
         with open(CONFIG_PATH, encoding="utf-8") as f:
             entries = yaml.safe_load(f) or []
 

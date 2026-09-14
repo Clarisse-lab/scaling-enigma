@@ -1,5 +1,5 @@
-"""Fonte de vagas: BairesDev. Endpoint a validar (ver solides.py para o
-motivo). Esqueleto até a validação."""
+"""Fonte de vagas: BairesDev, por empresa específica (opcional).
+Sem agregador público por área — a varredura diária usa Adzuna/Jooble."""
 
 from jobhunter.models import JobPosting
 from jobhunter.sources.base import JobSource
@@ -8,7 +8,10 @@ from jobhunter.sources.base import JobSource
 class BairesDevSource(JobSource):
     name = "bairesdev"
 
-    def fetch_jobs(self, companies: list[str]) -> list[JobPosting]:
-        if companies:
-            print(f"[bairesdev] endpoint ainda não validado para: {companies}.")
+    def __init__(self, companies: list[str] | None = None):
+        self.companies = companies or []
+
+    def fetch_jobs(self) -> list[JobPosting]:
+        if self.companies:
+            print(f"[bairesdev] endpoint ainda não validado para: {self.companies}.")
         return []

@@ -4,11 +4,15 @@ from jobhunter.models import JobPosting
 
 
 class JobSource(ABC):
-    """Interface comum para qualquer fonte de vagas."""
+    """Interface comum para qualquer fonte de vagas.
+
+    Cada fonte recebe sua própria configuração (empresas, queries, chaves de
+    API) no construtor e sabe buscar suas vagas sozinha.
+    """
 
     name: str
 
     @abstractmethod
-    def fetch_jobs(self, companies: list[str]) -> list[JobPosting]:
-        """Retorna as vagas abertas para a lista de empresas informada."""
+    def fetch_jobs(self) -> list[JobPosting]:
+        """Retorna as vagas encontradas por esta fonte."""
         raise NotImplementedError
