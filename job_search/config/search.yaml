@@ -7,13 +7,16 @@
 
 location: "Brasil"
 
-# Se true: (1) acrescenta "remoto" em cada consulta abaixo antes de enviar
-# ao Adzuna/Jooble, pra aumentar a chance de achar vagas remotas; e (2)
-# depois de buscar, descarta qualquer vaga cujo título/descrição/local não
+# Se true: depois de buscar (com as consultas normais abaixo, sem
+# modificá-las), descarta qualquer vaga cujo título/descrição/local não
 # mencione trabalho remoto. Nenhuma das duas APIs tem um filtro oficial e
 # confiável de "só remoto" pro Brasil, então é uma solução por palavra-chave
-# — pode deixar passar falso positivo/negativo. Ajustar remote_keywords em
-# job_search/src/jobhunter/filters.py se precisar.
+# — pode deixar passar falso positivo/negativo. Ajustar as listas de
+# palavras em job_search/src/jobhunter/filters.py se precisar.
+#
+# Importante: NÃO acrescentar "remoto" ao texto das consultas abaixo —
+# isso faz o Adzuna/Jooble tratarem como termo obrigatório extra e some
+# quase todo resultado (testado: caiu de 30 vagas pra 0 quando fizemos isso).
 remote_only: true
 
 queries:

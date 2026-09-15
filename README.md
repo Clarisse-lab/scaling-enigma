@@ -37,11 +37,11 @@ Todas as vagas coletadas passam pelo mesmo ranqueamento, definido por `job_searc
 
 ### Filtro de vagas remotas
 
-`job_search/config/search.yaml` tem `remote_only: true/false`. Quando ativado:
-1. Acrescenta "remoto" em cada consulta antes de enviar ao Adzuna/Jooble.
-2. Depois de buscar, descarta vagas cujo texto não indique trabalho remoto (heurística por palavra-chave em `job_search/src/jobhunter/filters.py`, sem confiar em "remoto"/"remota" isolados quando há sinal de presencial/híbrido por perto).
+`job_search/config/search.yaml` tem `remote_only: true/false`. Quando ativado, depois de buscar (com as consultas normais, sem modificá-las) descarta vagas cujo texto não indique trabalho remoto — heurística por palavra-chave em `job_search/src/jobhunter/filters.py`, sem confiar em "remoto"/"remota" isolados quando há sinal de presencial/híbrido por perto.
 
 É uma heurística, não um filtro oficial das plataformas — pode deixar passar algum falso positivo/negativo. Ajuste as listas de palavras em `filters.py` se notar erros nos resultados reais.
+
+⚠️ Testamos acrescentar "remoto" no texto da própria consulta antes de mandar pro Adzuna/Jooble (pra ajudar a achar mais vagas remotas) — resultado: caiu de 30 vagas pra 0, porque as APIs parecem tratar palavras extras como termo obrigatório. Por isso o filtro atua só depois da busca, nunca mexendo no texto da consulta.
 
 ## Varredura diária automática
 

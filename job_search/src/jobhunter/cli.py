@@ -45,10 +45,6 @@ def build_sources(search_cfg: dict) -> list:
     queries = search_cfg.get("queries", [])
     location = search_cfg.get("location", "")
     results_per_query = search_cfg.get("results_per_query", 20)
-    remote_only = search_cfg.get("remote_only", False)
-
-    if remote_only:
-        queries = [{**q, "what": f"{q.get('what', '')} remoto".strip()} for q in queries]
 
     if queries:
         sources.append(AdzunaSource(queries, location, results_per_query))
