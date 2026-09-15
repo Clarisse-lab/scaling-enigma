@@ -11,6 +11,7 @@ from pathlib import Path
 
 import yaml
 
+from jobhunter.filters import filter_remote_only
 from jobhunter.matcher import load_keywords, rank_jobs
 from jobhunter.models import JobPosting
 from jobhunter.sources.abler import AblerSource
@@ -36,15 +37,18 @@ def load_yaml(path: Path) -> dict | list:
         return yaml.safe_load(f) or {}
 
 
-def build_sources() -> list:
+def build_sources(search_cfg: dict) -> list:
     """Monta a lista de fontes a consultar: agregadores por área
     (Adzuna/Jooble) + fontes por empresa opcionais + entradas manuais."""
     sources = []
 
-    search_cfg = load_yaml(CONFIG_DIR / "search.yaml")
     queries = search_cfg.get("queries", [])
     location = search_cfg.get("location", "")
     results_per_query = search_cfg.get("results_per_query", 20)
+    remote_only = search_cfg.get("remote_only", False)
+
+    if remote_only:
+        queries = [{**q, "what": f"{q.get('what', '')} remoto".strip()} for q in queries]
 
     if queries:
         sources.append(AdzunaSource(queries, location, results_per_query))
@@ -89,10 +93,17 @@ def main() -> None:
                          help="Máximo de vagas no relatório/saída")
     args = parser.parse_args()
 
+    search_cfg = load_yaml(CONFIG_DIR / "search.yaml")
+
     jobs: list[JobPosting] = []
-    for source in build_sources():
+    for source in build_sources(search_cfg):
         found = source.fetch_jobs()
         jobs.extend(found)
+
+    if search_cfg.get("remote_only", False):
+        before = len(jobs)
+        jobs = filter_remote_only(jobs)
+        print(f"Filtro remoto: {before} vaga(s) encontradas, {len(jobs)} mencionam trabalho remoto.\n")
 
     keywords = load_keywords()
     ranked = rank_jobs(jobs, keywords)[: args.top]

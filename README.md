@@ -35,6 +35,14 @@ Nem toda plataforma pode ser automatizada com segurança — os Termos de Uso de
 
 Todas as vagas coletadas passam pelo mesmo ranqueamento, definido por `job_search/config/keywords.yaml` (calibrado com base no currículo real em `resume/resume_data.yaml`).
 
+### Filtro de vagas remotas
+
+`job_search/config/search.yaml` tem `remote_only: true/false`. Quando ativado:
+1. Acrescenta "remoto" em cada consulta antes de enviar ao Adzuna/Jooble.
+2. Depois de buscar, descarta vagas cujo texto não indique trabalho remoto (heurística por palavra-chave em `job_search/src/jobhunter/filters.py`, sem confiar em "remoto"/"remota" isolados quando há sinal de presencial/híbrido por perto).
+
+É uma heurística, não um filtro oficial das plataformas — pode deixar passar algum falso positivo/negativo. Ajuste as listas de palavras em `filters.py` se notar erros nos resultados reais.
+
 ## Varredura diária automática
 
 O workflow `.github/workflows/daily-job-scan.yml` roda todo dia às 08:00 (horário de Brasília):
