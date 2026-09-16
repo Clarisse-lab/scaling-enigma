@@ -7,17 +7,22 @@
 
 location: "Brasil"
 
-# Se true: depois de buscar (com as consultas normais abaixo, sem
-# modificá-las), descarta qualquer vaga cujo título/descrição/local não
-# mencione trabalho remoto. Nenhuma das duas APIs tem um filtro oficial e
-# confiável de "só remoto" pro Brasil, então é uma solução por palavra-chave
-# — pode deixar passar falso positivo/negativo. Ajustar as listas de
-# palavras em job_search/src/jobhunter/filters.py se precisar.
+# Se true, descarta (depois de buscar) qualquer vaga cujo título/
+# descrição/local não mencione trabalho remoto. TESTADO E DESATIVADO
+# POR PADRÃO: o Adzuna costuma devolver só um trecho curto da descrição,
+# não o anúncio completo — então muita vaga remota de verdade não cita
+# "remoto" nesse trecho, e o filtro rígido descartava até 92 de 95 vagas
+# reais, sobrando só ruído (ver job_search/src/jobhunter/filters.py).
+#
+# Em vez de excluir, o padrão agora é impulsionar: job_search/config/
+# keywords.yaml tem a categoria work_mode, que dá pontuação extra pra
+# vaga remota (e negativa pra presencial/híbrida) sem descartar nada —
+# assim as remotas sobem pro topo do ranking sem sumir o resto.
 #
 # Importante: NÃO acrescentar "remoto" ao texto das consultas abaixo —
 # isso faz o Adzuna/Jooble tratarem como termo obrigatório extra e some
 # quase todo resultado (testado: caiu de 30 vagas pra 0 quando fizemos isso).
-remote_only: true
+remote_only: false
 
 queries:
   - what: "farmacêutica dados"

@@ -65,6 +65,17 @@ ai:
   - { term: "gemini", weight: 1 }
   - { term: "chatgpt", weight: 1 }
 
+work_mode:
+  - { term: "100% remoto", weight: 5 }
+  - { term: "totalmente remoto", weight: 5 }
+  - { term: "home office", weight: 4 }
+  - { term: "trabalho remoto", weight: 4 }
+  - { term: "remote work", weight: 4 }
+  - { term: "remoto", weight: 2 }
+  - { term: "híbrido", weight: -1 }
+  - { term: "hibrido", weight: -1 }
+  - { term: "presencial", weight: -2 }
+
 # Termos que derrubam a pontuação (senioridade/áreas fora de interesse)
 negative:
   - { term: "estágio", weight: -2 }

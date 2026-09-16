@@ -35,13 +35,14 @@ Nem toda plataforma pode ser automatizada com segurança — os Termos de Uso de
 
 Todas as vagas coletadas passam pelo mesmo ranqueamento, definido por `job_search/config/keywords.yaml` (calibrado com base no currículo real em `resume/resume_data.yaml`).
 
-### Filtro de vagas remotas
+### Vagas remotas
 
-`job_search/config/search.yaml` tem `remote_only: true/false`. Quando ativado, depois de buscar (com as consultas normais, sem modificá-las) descarta vagas cujo texto não indique trabalho remoto — heurística por palavra-chave em `job_search/src/jobhunter/filters.py`, sem confiar em "remoto"/"remota" isolados quando há sinal de presencial/híbrido por perto.
+Duas tentativas testadas e descartadas, documentadas aqui pra não repetir o erro:
 
-É uma heurística, não um filtro oficial das plataformas — pode deixar passar algum falso positivo/negativo. Ajuste as listas de palavras em `filters.py` se notar erros nos resultados reais.
+1. Acrescentar "remoto" no texto da consulta antes de mandar pro Adzuna/Jooble — as APIs tratam como termo obrigatório extra e o resultado quase zera (caiu de 30 vagas pra 0).
+2. Filtro rígido pós-busca, descartando qualquer vaga cujo texto não citasse "remoto" (`job_search/config/search.yaml` → `remote_only: true`, lógica em `job_search/src/jobhunter/filters.py`) — o Adzuna geralmente devolve só um trecho curto da descrição, então muita vaga remota de verdade não menciona a palavra nesse trecho. Na prática descartou 92 de 95 vagas reais, sobrando só ruído.
 
-⚠️ Testamos acrescentar "remoto" no texto da própria consulta antes de mandar pro Adzuna/Jooble (pra ajudar a achar mais vagas remotas) — resultado: caiu de 30 vagas pra 0, porque as APIs parecem tratar palavras extras como termo obrigatório. Por isso o filtro atua só depois da busca, nunca mexendo no texto da consulta.
+**Abordagem atual:** em vez de excluir, impulsionar. `job_search/config/keywords.yaml` tem a categoria `work_mode`, com pontuação extra para termos como "100% remoto"/"home office" e pontuação negativa para "presencial"/"híbrido". As vagas remotas sobem pro topo do ranking sem que o resto desapareça. `remote_only` continua existindo em `search.yaml` (desativado por padrão) pra quem quiser a exclusão rígida mesmo sabendo da perda de recall.
 
 ## Varredura diária automática
 
