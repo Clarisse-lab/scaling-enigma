@@ -1,11 +1,17 @@
-# Consultas usadas pelas APIs de busca agregada (Adzuna, Jooble) para a
-# varredura diária. Cada item vira uma chamada de busca por palavra-chave
-# ("what") + localização ("where"), sem precisar saber a empresa antes.
+# Consultas usadas pelas APIs de busca agregada (Adzuna, Jooble, Upwork)
+# para a varredura diária. Cada item vira uma chamada de busca por
+# palavra-chave ("what") + localização ("where"), sem precisar saber a
+# empresa antes.
 #
 # Ajuste/adicione termos conforme o que trouxer melhores resultados —
 # o ranqueamento final ainda é feito por job_search/config/keywords.yaml.
 
 location: "Brasil"
+
+# Upwork é freelance/contrato, não CLT/PJ tradicional — usa as mesmas
+# consultas abaixo (location é ignorado, Upwork é global). Desative se
+# não quiser vagas freelance misturadas no ranking.
+include_upwork: true
 
 # Se true, descarta (depois de buscar) qualquer vaga cujo título/
 # descrição/local não mencione trabalho remoto. TESTADO E DESATIVADO

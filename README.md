@@ -30,6 +30,7 @@ Motor pessoal de busca e ranqueamento de vagas de emprego, focado na interseçã
 Nem toda plataforma pode ser automatizada com segurança — os Termos de Uso de várias delas (LinkedIn, Glassdoor) proíbem scraping e o risco é bloqueio de conta. Além disso, plataformas como Gupy/Solides/Abler não têm um agregador público de busca por área entre todas as empresas — só por empresa individual, o que não escala. A estratégia adotada:
 
 - **Busca diária por área (sem empresa fixa):** [Adzuna](https://developer.adzuna.com/) e [Jooble](https://jooble.org/api/about) — agregadores com API gratuita de busca por palavra-chave + localização, configurados em `job_search/config/search.yaml`. É a fonte principal da varredura diária.
+- **Upwork (freelance/contrato):** via feed RSS público de busca (`job_search/src/jobhunter/sources/upwork.py`), sem OAuth — a API completa do Upwork exige app aprovado por usuário, então usamos o mecanismo de sindicação oficial em vez disso. Não confirmado se ainda está ativo (não testável neste ambiente); desative com `include_upwork: false` em `search.yaml` se não quiser vagas freelance misturadas.
 - **Por empresa específica (opcional):** Gupy, Solides, Abler, BairesDev — se você quiser mirar uma empresa que já conhece, adicione o slug dela em `job_search/config/platforms.yaml`. Os endpoints ainda não foram validados ao vivo (ver notas em cada arquivo de `sources/`).
 - **Manual/assistido:** LinkedIn, Glassdoor — sem automação segura; configure um alerta de vaga (Job Alert) por palavra-chave nessas plataformas e cole as relevantes em `job_search/config/manual_jobs.yaml`. Entram no ranking junto com as demais.
 
@@ -47,7 +48,7 @@ Duas tentativas testadas e descartadas, documentadas aqui pra não repetir o err
 ## Varredura diária automática
 
 O workflow `.github/workflows/daily-job-scan.yml` roda todo dia às 08:00 (horário de Brasília):
-1. Executa a busca (Adzuna + Jooble + fontes opcionais + manuais).
+1. Executa a busca (Adzuna + Jooble + Upwork + fontes opcionais + manuais).
 2. Gera um relatório em `job_search/results/AAAA-MM-DD.md` e commita no repositório.
 3. Se houver vagas encontradas, abre uma **Issue** no GitHub com o resumo — isso dispara a notificação padrão do GitHub (e-mail/app) sem precisar configurar nenhum serviço externo.
 

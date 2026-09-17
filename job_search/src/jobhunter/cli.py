@@ -21,6 +21,7 @@ from jobhunter.sources.gupy import GupySource
 from jobhunter.sources.jooble import JoobleSource
 from jobhunter.sources.manual import ManualSource
 from jobhunter.sources.solides import SolidesSource
+from jobhunter.sources.upwork import UpworkSource
 
 CONFIG_DIR = Path(__file__).resolve().parents[2] / "config"
 
@@ -49,6 +50,8 @@ def build_sources(search_cfg: dict) -> list:
     if queries:
         sources.append(AdzunaSource(queries, location, results_per_query))
         sources.append(JoobleSource(queries, location, results_per_query))
+        if search_cfg.get("include_upwork", True):
+            sources.append(UpworkSource(queries, results_per_query))
 
     platforms = load_yaml(CONFIG_DIR / "platforms.yaml")
     for platform in platforms:
