@@ -12,7 +12,7 @@ from pathlib import Path
 import yaml
 
 from jobhunter.filters import filter_remote_only
-from jobhunter.matcher import load_keywords, rank_jobs
+from jobhunter.matcher import dedupe_jobs, load_keywords, rank_jobs
 from jobhunter.models import JobPosting
 from jobhunter.sources.abler import AblerSource
 from jobhunter.sources.adzuna import AdzunaSource
@@ -98,6 +98,11 @@ def main() -> None:
     for source in build_sources(search_cfg):
         found = source.fetch_jobs()
         jobs.extend(found)
+
+    before_dedupe = len(jobs)
+    jobs = dedupe_jobs(jobs)
+    if before_dedupe != len(jobs):
+        print(f"Duplicatas removidas: {before_dedupe} -> {len(jobs)} vaga(s) únicas.\n")
 
     if search_cfg.get("remote_only", False):
         before = len(jobs)
