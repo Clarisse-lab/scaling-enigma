@@ -9,9 +9,14 @@
 location: "Brasil"
 
 # Upwork é freelance/contrato, não CLT/PJ tradicional — usa as mesmas
-# consultas abaixo (location é ignorado, Upwork é global). Desative se
-# não quiser vagas freelance misturadas no ranking.
-include_upwork: true
+# consultas abaixo (location é ignorado, Upwork é global).
+#
+# DESATIVADO: o feed RSS público retorna 403 Forbidden em toda busca
+# (confirmado em execução real no GitHub Actions em 2026-09-17/18) — o
+# Upwork bloqueia acesso sem login de verdade. O código fica pronto em
+# sources/upwork.py; só vale reativar com a API OAuth2 completa (exige
+# app aprovado + login manual por conta, não é uma chave simples).
+include_upwork: false
 
 # Se true, descarta (depois de buscar) qualquer vaga cujo título/
 # descrição/local não mencione trabalho remoto. TESTADO E DESATIVADO
