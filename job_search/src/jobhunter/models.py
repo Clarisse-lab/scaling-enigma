@@ -11,3 +11,4 @@ class JobPosting:
     location: str = ""
     score: float = 0.0
     matched_terms: list[str] = field(default_factory=list)
+    query_group: str = ""

@@ -30,6 +30,8 @@ Motor pessoal de busca e ranqueamento de vagas de emprego, focado na interseçã
 Nem toda plataforma pode ser automatizada com segurança — os Termos de Uso de várias delas (LinkedIn, Glassdoor) proíbem scraping e o risco é bloqueio de conta. Além disso, plataformas como Gupy/Solides/Abler não têm um agregador público de busca por área entre todas as empresas — só por empresa individual, o que não escala. A estratégia adotada:
 
 - **Busca diária por área (sem empresa fixa):** [Adzuna](https://developer.adzuna.com/) e [Jooble](https://jooble.org/api/about) — agregadores com API gratuita de busca por palavra-chave + localização, configurados em `job_search/config/search.yaml`. É a fonte principal da varredura diária.
+  - ⚠️ O Jooble nunca retornou nenhuma vaga em 19 dias reais de execução (0 vagas, sem erro). Hipótese não confirmada: o campo de localização pode precisar do nome em inglês — testando `jooble_location: "Brazil"` em `search.yaml` em vez de "Brasil". Acompanhar se isso muda algo nas próximas execuções.
+  - As consultas ficam em dois grupos (`query_groups` em `search.yaml`): `farma` (específico pra farmacêutica/healthtech — volume pequeno, normal repetir por dias) e `geral` (análise de dados/automação/cloud sem exigir termo de saúde — mais volume/variedade). O relatório mostra os dois separados.
 - **Upwork (freelance/contrato) — desativado:** `job_search/src/jobhunter/sources/upwork.py` tenta o feed RSS público de busca, mas confirmado em execução real (17-18/09) que retorna 403 Forbidden em toda consulta — o Upwork bloqueia acesso sem login. `include_upwork: false` em `search.yaml` por padrão. Reativar só valeria com a API OAuth2 completa (app aprovado + login manual por conta), bem mais trabalho que Adzuna/Jooble.
 - **Por empresa específica (opcional):** Gupy, Solides, Abler, BairesDev — se você quiser mirar uma empresa que já conhece, adicione o slug dela em `job_search/config/platforms.yaml`. Os endpoints ainda não foram validados ao vivo (ver notas em cada arquivo de `sources/`).
 - **Manual/assistido:** LinkedIn, Glassdoor — sem automação segura; configure um alerta de vaga (Job Alert) por palavra-chave nessas plataformas e cole as relevantes em `job_search/config/manual_jobs.yaml`. Entram no ranking junto com as demais.
@@ -78,11 +80,11 @@ O portfólio (site/repositório para atrair recrutadores) é um projeto separado
 ✅ Feito:
 - `resume/resume_data.yaml` preenchido com o currículo real.
 - `job_search/config/keywords.yaml` calibrado com base nesse perfil.
-- Busca por área via Adzuna + Jooble implementada (`job_search/config/search.yaml`).
-- Varredura diária + notificação via Issue configurada em `.github/workflows/daily-job-scan.yml`.
+- Busca por área via Adzuna + Jooble implementada, dividida em grupos `farma`/`geral` (`job_search/config/search.yaml`).
+- Varredura diária + notificação via Issue (e via rotina de chat) configurada.
+- Deduplicação entre grupos/consultas testada e funcionando.
 - Matching testado localmente (sem rede) e funcionando.
 
 ⏳ Pendente:
-1. Cadastrar nas APIs (Adzuna, Jooble) e configurar os Secrets no GitHub.
-2. Acompanhar a primeira execução do workflow para validar os endpoints reais.
-3. Definir se o PDF original vai para `resume/original/` (contém telefone — ver `resume/README.md` sobre exposição de dados sensíveis caso o repositório seja público).
+1. Confirmar se `jooble_location: "Brazil"` resolve o Jooble nunca retornar vaga (acompanhar próximas execuções).
+2. Definir se o PDF original vai para `resume/original/` (contém telefone — ver `resume/README.md` sobre exposição de dados sensíveis caso o repositório seja público).

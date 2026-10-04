@@ -58,5 +58,10 @@ class JoobleSource(JobSource):
                     source=self.name,
                     description=item.get("snippet", ""),
                     location=item.get("location", ""),
+                    query_group=query.get("group", ""),
                 ))
+
+        if not jobs:
+            print(f"[jooble] 0 vagas em todas as consultas (location='{self.location}') — "
+                  f"se continuar assim, o formato de localização provavelmente ainda está errado.")
         return jobs

@@ -8,6 +8,13 @@
 
 location: "Brasil"
 
+# O Jooble nunca retornou nenhuma vaga em 19 dias de execução real
+# (0 vagas, sem erro — ver histórico do repo). Hipótese não confirmada:
+# o campo de localização pode precisar do nome em inglês. Testando
+# "Brazil" aqui só pro Jooble; Adzuna continua usando `location` acima
+# (o país já é fixo via country=br em sources/adzuna.py).
+jooble_location: "Brazil"
+
 # Upwork é freelance/contrato, não CLT/PJ tradicional — usa as mesmas
 # consultas abaixo (location é ignorado, Upwork é global).
 #
@@ -33,17 +40,48 @@ include_upwork: false
 # Importante: NÃO acrescentar "remoto" ao texto das consultas abaixo —
 # isso faz o Adzuna/Jooble tratarem como termo obrigatório extra e some
 # quase todo resultado (testado: caiu de 30 vagas pra 0 quando fizemos isso).
-remote_only: false
 
-queries:
-  - what: "farmacêutica dados"
-  - what: "análise de dados saúde"
-  - what: "automação processos saúde"
-  - what: "healthtech"
-  - what: "analista de dados farmacêutica"
-  - what: "n8n automação"
-  - what: "automação farmacêutica"
-  - what: "dados regulatório farmacêutico"
+# Consultas agrupadas. Cada grupo é buscado e ranqueado separadamente no
+# relatório diário (mesma pontuação de keywords.yaml nos dois), pra
+# você ver tanto o nicho exato quanto o panorama mais amplo:
+#
+# - farma: específico pra indústria farmacêutica/healthtech. Volume real
+#   de vagas no Brasil é pequeno, então é normal repetir por vários dias
+#   até os anúncios saírem do ar.
+# - geral: análise de dados/automação/cloud sem exigir termo de saúde —
+#   bem mais volume, trazendo vagas novas com mais frequência; a pontuação
+#   de keywords.yaml ainda prioriza as que também combinam com farma.
+query_groups:
+  farma:
+    label: "Farmacêutica / Health"
+    queries:
+      - what: "farmacêutica dados"
+      - what: "análise de dados saúde"
+      - what: "automação processos saúde"
+      - what: "healthtech"
+      - what: "analista de dados farmacêutica"
+      - what: "automação farmacêutica"
+      - what: "dados regulatório farmacêutico"
+      - what: "farmacovigilância"
+      - what: "assuntos regulatórios farmacêutica"
+      - what: "qualidade farmacêutica GMP"
+      - what: "LIMS laboratório"
+  geral:
+    label: "Dados / Automação (geral)"
+    queries:
+      - what: "análise de dados"
+      - what: "automação de processos"
+      - what: "n8n automação"
+      - what: "engenheiro de dados"
+      - what: "business intelligence"
+      - what: "RPA automação"
+      - what: "power bi analista"
+      - what: "cloud engineer"
+      - what: "data analyst"
+      - what: "low-code no-code automação"
 
 # Quantos resultados pedir por consulta, por plataforma.
 results_per_query: 20
+
+# Quantas vagas mostrar no relatório, por grupo (não no total).
+top_per_group: 15

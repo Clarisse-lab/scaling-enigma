@@ -71,5 +71,6 @@ class AdzunaSource(JobSource):
                     source=self.name,
                     description=item.get("description", ""),
                     location=(item.get("location") or {}).get("display_name", ""),
+                    query_group=query.get("group", ""),
                 ))
         return jobs

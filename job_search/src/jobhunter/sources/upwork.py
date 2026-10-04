@@ -67,5 +67,6 @@ class UpworkSource(JobSource):
                     url=link,
                     source=self.name,
                     description=description,
+                    query_group=query.get("group", ""),
                 ))
         return jobs
