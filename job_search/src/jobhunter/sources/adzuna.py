@@ -56,7 +56,7 @@ class AdzunaSource(JobSource):
             }
             url = API_URL_TEMPLATE.format(country=self.country)
             try:
-                resp = requests.get(url, params=params, timeout=15)
+                resp = requests.get(url, params=params, timeout=8)
                 resp.raise_for_status()
                 payload = resp.json()
             except (requests.RequestException, ValueError) as exc:

@@ -43,7 +43,7 @@ class JoobleSource(JobSource):
             location = query.get("where", self.location)
             body = {"keywords": keywords, "location": location}
             try:
-                resp = requests.post(url, json=body, timeout=15)
+                resp = requests.post(url, json=body, timeout=8)
                 resp.raise_for_status()
                 payload = resp.json()
             except (requests.RequestException, ValueError) as exc:

@@ -16,6 +16,12 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    # Rede de segurança: a execução de 2026-10-05 ficou pendurada 15min
+    # (vs. ~10-30s normal) e foi cancelada sem log claro do motivo --
+    # provável soma de timeouts de 15s em várias das 22 consultas (dobramos
+    # de 8 pra 22 ao adicionar o grupo "geral"). Isso limita o job inteiro
+    # a falhar rápido em vez de ficar pendurado por minutos.
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
 
