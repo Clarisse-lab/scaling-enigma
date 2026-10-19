@@ -1,12 +1,15 @@
 name: Varredura diária de vagas
 
 on:
-  schedule:
-    # 11:00 UTC = 08:00 horário de Brasília (sem horário de verão desde 2019).
-    # Minuto 17 (não :00) para fugir do horário mais concorrido da fila do
-    # GitHub Actions — agendamentos "schedule" são melhor-esforço e sofrem
-    # atraso, especialmente no topo da hora. Mesmo assim pode atrasar.
-    - cron: "17 11 * * *"
+  # Varredura automática pausada a pedido da usuária em 2026-10-19.
+  # Gatilho "schedule" removido — o workflow só roda via disparo manual
+  # (workflow_dispatch) até ser reativado.
+  # schedule:
+  #   # 11:00 UTC = 08:00 horário de Brasília (sem horário de verão desde 2019).
+  #   # Minuto 17 (não :00) para fugir do horário mais concorrido da fila do
+  #   # GitHub Actions — agendamentos "schedule" são melhor-esforço e sofrem
+  #   # atraso, especialmente no topo da hora. Mesmo assim pode atrasar.
+  #   - cron: "17 11 * * *"
   workflow_dispatch: {}
 
 permissions:
